@@ -302,3 +302,18 @@ class Engine(BaseEngine):
 
     def strip_icc(self):
         self.icc_profile = None
+
+    def get_upper_left_pixel(self):
+        return self.image.getpixel((0, 0))
+
+    def uncrop(self, upper_left_pixel=None, top=0, right=0, bottom=0, left=0):
+        if upper_left_pixel is None:
+            upper_left_pixel = self.get_upper_left_pixel()
+        # first step, draw the canvas...
+        old_width, old_height = self.image.size
+        new_image = Image.new('RGB',
+                              (old_width + right + left,
+                               old_height + top + bottom),
+                              upper_left_pixel)
+        new_image.paste(im=self.image, box=(right, top))
+        self.image = new_image

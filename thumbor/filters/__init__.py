@@ -26,7 +26,6 @@ def filter_method(*args, **kwargs):
         if fn.__defaults__:
             default_padding = [None] * (len(args) - (len(fn.__defaults__)))
             defaults = default_padding + list(fn.__defaults__)
-
         wrapper.filter_data = {
             'name': fn.__name__,
             'params': args,
