@@ -306,9 +306,14 @@ class Engine(BaseEngine):
     def get_upper_left_pixel(self):
         return self.image.getpixel((0, 0))
 
-    def uncrop(self, upper_left_pixel=None, top=0, right=0, bottom=0, left=0):
-        if upper_left_pixel is None:
-            upper_left_pixel = self.get_upper_left_pixel()
+    def uncrop(self, top=0, right=0, bottom=0, left=0):
+        if self.image.mode == 'RGBA' and any([pixel[3] != 255 for pixel in self.image.getdata()]):
+            # first, whiten background.
+            mask = Image.new('RGBA', self.image.size, (255, 255, 255))
+            mask.paste(self.image, self.image)
+            mask.format = 'PNG'
+            self.image = mask
+        upper_left_pixel = self.get_upper_left_pixel()
         # first step, draw the canvas...
         old_width, old_height = self.image.size
         new_image = Image.new('RGB',

@@ -18,6 +18,4 @@ class Filter(BaseFilter):
     def uncrop(self, top=0, right=0, bottom=0, left=0):
         if not any([padding for padding in (top, right, bottom, left)]):
             return
-        upper_left_pixel = self.engine.get_upper_left_pixel()
-        self.engine.uncrop(upper_left_pixel=upper_left_pixel, top=top,
-                           right=right, bottom=bottom, left=left)
+        self.engine.uncrop(top=top, right=right, bottom=bottom, left=left)
